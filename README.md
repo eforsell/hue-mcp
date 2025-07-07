@@ -2,6 +2,8 @@
 
 A powerful Model Context Protocol (MCP) interface for controlling Philips Hue smart lighting systems.
 
+Note: This fork changes the transport protocol from sse to stdio to make it work with Claude Desktop.
+
 ## Table of Contents
 
 - [Philips Hue MCP Server](#philips-hue-mcp-server)
@@ -191,19 +193,12 @@ set_scene(2, "abc123")  # Group 2, scene ID abc123
 quick_scene("Evening Relaxation", group_id=2, rgb=[255, 147, 41], brightness=120)
 ```
 
-## Advanced Options
-
-Run the server with custom settings:
-
-```bash
-python hue_server.py --host 0.0.0.0 --port 8888 --log-level debug
-```
-
 ## Troubleshooting
 
 - **Bridge not found**: If automatic discovery doesn't work, you have two options:
   1. Manually edit the `BRIDGE_IP` variable in the script with your bridge's IP address
   2. Manually create a config file:
+
      ```bash
      # Create the config directory
      mkdir -p ~/.hue-mcp
@@ -211,8 +206,9 @@ python hue_server.py --host 0.0.0.0 --port 8888 --log-level debug
      # Create a config.json file with your bridge IP
      echo '{"bridge_ip": "192.168.1.x"}' > ~/.hue-mcp/config.json
      ```
+
      Replace "192.168.1.x" with your actual Hue bridge IP address
-     
+
 - **Connection issues**: Delete `~/.hue-mcp/config.json` and restart the server to re-authenticate
 - **Light control not working**: Use `refresh_lights` tool to update the light information cache
 - **Groups or scenes not showing up**: Restart the bridge and server to sync all data
